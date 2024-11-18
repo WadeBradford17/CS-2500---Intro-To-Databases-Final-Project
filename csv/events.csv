@@ -1,0 +1,21 @@
+﻿event_id,event_name,location,event_date,event_type,ticket_price
+1,Jazz & Heritage Festival,"New Orleans, LA",4/28/2024,Concert,120
+2,Comic-Con,"San Diego, CA",7/18/2024,Convention,250
+3,CES (Consumer Electronics Show),"Las Vegas, NV",1/9/2024,Expo,300
+4,Coachella,"Indio, CA",4/12/2024,Concert,450
+5,Sundance Film Festival,"Park City, UT",1/18/2024,Festival,150
+6,Boston Marathon,"Boston, MA",4/15/2024,Sporting Event,100
+7,Oktoberfest,"Munich, Germany",9/21/2024,Festival,50
+8,South by Southwest (SXSW),"Austin, TX",3/8/2024,Expo,350
+9,E3 (Electronic Entertainment Expo),"Los Angeles, CA",6/11/2024,Expo,200
+10,Lollapalooza,"Chicago, IL",8/1/2024,Concert,150
+11,New York Fashion Week,"New York, NY",9/6/2024,Expo,500
+12,The Masters,"Augusta, GA",4/8/2024,Sporting Event,800
+13,TED Conference,"Vancouver, Canada",4/14/2024,Workshop,500
+14,Burning Man,"Black Rock City, NV",8/25/2024,Festival,475
+15,Bonnaroo,"Manchester, TN",6/13/2024,Concert,300
+16,Ultra Music Festival,"Miami, FL",3/22/2024,Concert,400
+17,The Great American Beer Festival,"Denver, CO",10/10/2024,Festival,95
+18,Art Basel,"Miami Beach, FL",12/5/2024,Expo,55
+19,Tour de France,"Paris, France",7/6/2024,Sporting Event,100
+20,Comic Con India,"Mumbai, India",12/20/2024,Convention,60
