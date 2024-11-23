@@ -1,4 +1,5 @@
 import sqlite3
+from event_management_functions import display_table, add_record, modify_record, remove_record
 
 # a.) App should allow user to add, remove, and modify
 # records from all tables.
@@ -11,7 +12,49 @@ import sqlite3
 
 # our three SQL database tables are events, attendees, tickets
 # events table has columns event_id, event_name, location, event_date, event_type, ticket_price
-# attendees table has columns attendee_id, full_name, email, age, registration_date
+# attendees table has columns attendee_id, name, email, age, registration_date
 # tickets table has columns ticket_id, event_id, attendee_id, purchase_date, seat_number
 
+# welcome message function
+def welcome_message():
+    print("Welcome to the Event Management App!")
+    print("This app allows you to manage events, attendees, and tickets.")
+    print("You can add, remove, and modify records from all tables.")
+    print("You can also make basic statistical queries and query against any column using WHERE.")
+    print("Let's get started!")
+
+# main function to run the app
+def main():
+    welcome_message()
+
+    # while loop to keep the app running as the user enters commands
+    while True:
+        print("Enter a command:")
+        print("1. Display a table")
+        print("2. Add a table entry")
+        print("3. Remove a table entry")
+        print("4. Modify a table entry")
+        print("5. Enter a basic statistical query (min, max, mean, median, standard deviation)")
+        print("6. Enter a query against any column using WHERE")
+        print("7. Enter a query with JOIN")
+        print("8. Generate Visualizations")
+        print("9. Exit")
+        command = input("Enter the command number: ")
+
+        if command == "1":
+            display_table()
+        elif command == "2":
+            add_record()
+        elif command == "3":
+            remove_record()
+        elif command == "4":
+            modify_record()
+        elif command == "9":
+            print("Exiting the Event Management App. Thank you!")
+            break
+        else:
+            print("Invalid command. Please try again.")
+
+if __name__ == "__main__":
+    main()
 
