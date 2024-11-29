@@ -1,4 +1,5 @@
 import sqlite3
+import matplotlib.pyplot as plt
 
 # function to display all records in a table
 # prompt user for which table (attendees, events, tickets) to display
@@ -241,3 +242,53 @@ def remove_record():
 
     else:
         print("Invalid table choice. Please try again.")
+
+# function to display bar plot of the number of events in each month and pie chart of event type
+def generate_visualizations():
+    connection = sqlite3.connect('event_management.db')
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT event_date FROM events")
+    rows = cursor.fetchall()
+
+    # the dates are in M/DD/YYYY format
+    months = []
+    for row in rows:
+        date = row[0]
+        month = date.split('/')[0]
+        months.append(month)
+
+    # count the number of events in each month
+    month_counts = {}
+    for month in months:
+        if month in month_counts:
+            month_counts[month] += 1
+        else:
+            month_counts[month] = 1
+
+    # create a bar plot of the number of events in each month
+    plt.bar(month_counts.keys(), month_counts.values())
+    plt.xlabel('Month')
+    plt.ylabel('Number of Events')
+    plt.title('Number of Events in Each Month')
+    plt.show()
+
+    # create a pie chart of the event types
+    cursor.execute("SELECT event_type FROM events")
+    rows = cursor.fetchall()
+    event_types = []
+    for row in rows:
+        event_types.append(row[0])
+
+    event_type_counts = {}
+    for event_type in event_types:
+        if event_type in event_type_counts:
+            event_type_counts[event_type] += 1
+        else:
+            event_type_counts[event_type] = 1
+
+    plt.pie(event_type_counts.values(), labels=event_type_counts.keys(), autopct='%1.1f%%')
+    plt.title('Event Types')
+    plt.show()
+
+    print("Visualizations generated successfully, shown one at a time.")

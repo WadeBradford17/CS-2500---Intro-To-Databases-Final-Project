@@ -1,5 +1,6 @@
 import sqlite3
-from event_management_functions import display_table, add_record, modify_record, remove_record
+import matplotlib.pyplot as plt
+from event_management_functions import display_table, add_record, modify_record, remove_record, generate_visualizations
 
 # a.) App should allow user to add, remove, and modify
 # records from all tables.
@@ -49,6 +50,8 @@ def main():
             remove_record()
         elif command == "4":
             modify_record()
+        elif command == "8":
+            generate_visualizations()
         elif command == "9":
             print("Exiting the Event Management App. Thank you!")
             break
