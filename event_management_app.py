@@ -1,7 +1,7 @@
 import sqlite3
 import matplotlib.pyplot as plt
 from event_management_functions import (display_table, add_record, modify_record, remove_record,
-                                        generate_visualizations, basic_statistical_query)
+                                        generate_visualizations, basic_statistical_query , where_query, join_query)
 
 # a.) App should allow user to add, remove, and modify
 # records from all tables.
@@ -38,7 +38,7 @@ def main():
         print("4. Modify a table entry")
         print("5. Make a basic statistical query (min, max, mean, median, standard deviation)")
         print("6. Enter a query against any column using WHERE")
-        print("7. Enter a query with JOIN")
+        print("7. Perform a query with JOIN")
         print("8. Generate Visualizations")
         print("9. Exit")
         command = input("Enter the command number: ")
@@ -53,6 +53,10 @@ def main():
             modify_record()
         elif command == "5":
             basic_statistical_query()
+        elif command == "6":
+            where_query()
+        elif command == "7":
+            join_query()
         elif command == "8":
             generate_visualizations()
         elif command == "9":

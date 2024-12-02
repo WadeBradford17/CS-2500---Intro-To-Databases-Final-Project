@@ -1,12 +1,11 @@
 import sqlite3
 import matplotlib.pyplot as plt
 
+connection = sqlite3.connect('event_management.db')
+cursor = connection.cursor()
 # function to display all records in a table
 # prompt user for which table (attendees, events, tickets) to display
 def display_table():
-    connection = sqlite3.connect('event_management.db')
-    cursor = connection.cursor()
-
     print("Which table would you like to display?")
     print("1. Attendees")
     print("2. Events")
@@ -42,9 +41,6 @@ def display_table():
 # function to add an entry to a table
 # prompt user for which table (attendees, events, tickets) and values for the type of table
 def add_record():
-    connection = sqlite3.connect('event_management.db')
-    cursor = connection.cursor()
-
     print("Which table would you like to add an entry to?")
     print("1. Attendees")
     print("2. Events")
@@ -113,8 +109,6 @@ def add_record():
 # function to modify an entry in a table
 # prompt user for which table (attendees, events, tickets), which column to modify, and the new value
 def modify_record():
-    connection = sqlite3.connect('event_management.db')
-    cursor = connection.cursor()
 
     print("Which table would you like to modify an entry in?")
     print("1. Attendees")
@@ -212,9 +206,6 @@ def modify_record():
 # function to remove a record from the table
 # prompt user for which table (attendees, events, tickets) and the ID of the record to remove
 def remove_record():
-    connection = sqlite3.connect('event_management.db')
-    cursor = connection.cursor()
-
     print("Which table would you like to remove an entry from?")
     print("1. Attendees")
     print("2. Events")
@@ -247,8 +238,6 @@ def remove_record():
 # function to make basic statistical queries such as- mean, min,
 # max, median, standard deviation mean, on numerical columns
 def basic_statistical_query():
-    connection = sqlite3.connect('event_management.db')
-    cursor = connection.cursor()
 
     print("Which table would you like to make a basic statistical query on?")
     print("1. Attendees")
@@ -347,11 +336,116 @@ def basic_statistical_query():
                 print("Invalid query choice. Please try again.")
 
 
+#function to let user perform queries using "where"
+def where_query():
+    print("Which table would you like to perform a query on?")
+    print("1. Attendees")
+    print("2. Events")
+    print("3. Tickets")
+
+    table_choice = input("Enter the table number: ")
+    if table_choice =="1":
+        cursor.execute("PRAGMA table_info(attendees)")
+        columns = [row[1] for row in cursor.fetchall()]
+        user_query=input("Please enter one query: ")
+        new_query=user_query.split(" ", 2)
+
+        while new_query[0].lower() not in columns or new_query[1] not in ["<", ">", "=", '>=', '<=']:
+            print('Please enter valid query: ')
+            user_query=input("Please enter one valid query: ")
+            new_query=user_query.split(" ")
+
+        column = new_query[0].strip().lower()
+        operator = new_query[1]
+        value = new_query[2].strip()
+
+        if (column == 'name' or column == 'email' or column == 'registration_date') and operator in ['>', '<']:
+            print('No results')
+        
+        else:
+            cursor.execute(f"Select * from attendees where {column} {operator} ?", (value,))
+            query1 = cursor.fetchall()
+            for row in query1:
+                print(row)
+    elif table_choice == '2':
+        cursor.execute("PRAGMA table_info(events)")
+        columns = [row[1] for row in cursor.fetchall()]
+        user_query=input("Please enter one query: ")
+        new_query=user_query.split(" ", 2)
+
+        while new_query[0].lower() not in columns or new_query[1] not in ["<", ">", "=", '<=', '>=']:
+            user_query=input("Please enter one valid query: ")
+            new_query=user_query.split(" ")
+
+        column = new_query[0].strip().lower()
+        operator = new_query[1]
+        value = new_query[2].strip()
+
+        if (column == 'event_name' or column == 'location' or column == 'event_date' or column == 'event_type') and operator in ['>', '<']:
+            print('No results')
+                
+        
+        else:
+            cursor.execute(f"Select * from events where {column} {operator} ?", (value,))
+            query1 = cursor.fetchall()
+            for row in query1:
+                print(row)
+    elif table_choice == '3':
+        cursor.execute("PRAGMA table_info(tickets)")
+        columns = [row[1] for row in cursor.fetchall()]
+        user_query=input("Please enter one query: ")
+        new_query=user_query.split(" ", 2)
+
+        while new_query[0].lower() not in columns or new_query[1] not in ['=']:
+            user_query=input("Please enter one valid query: ")
+            new_query=user_query.split(" ")
+
+        column = new_query[0].strip().lower()
+        operator = new_query[1]
+        value = new_query[2].strip()
+
+        cursor.execute(f"Select * from tickets where {column} {operator} ?", (value,))
+        query1 = cursor.fetchall()
+        for row in query1:
+            print(row)
+    else:
+        print('Not a valid table choice\n')
+
+
+#offers the user some queries to perform to see an example join query
+def join_query():
+    print('Which query would you like to perform?')
+    print("1. A person's age versus how much they spent on an event ticket")
+    print("2. Which attendees have purchased tickets for which events ")
+    print('3. Which events are attended by people above age 30')
+    print('4. A list of events in order of ticket price, and who is attending them')
+    col_choice = input('Enter a number: ')
+    if col_choice == '1':
+        cursor.execute('select age, ticket_price from tickets natural join attendees natural join events')
+        result1=cursor.fetchall()
+        for row in result1:
+            print(row)
+    if col_choice == '2':
+        cursor.execute('select name, email, event_name from tickets natural join attendees natural join events')
+        result2=cursor.fetchall()
+        for row in result2:
+            print(row)
+    if col_choice == '3':
+        cursor.execute("select age, event_name from tickets natural join attendees natural join events where age > '30'")
+        result3=cursor.fetchall()
+        for row in result3:
+            print(row)
+    if col_choice == '4':
+        cursor.execute('select ticket_price, name, email, event_name from tickets natural join attendees natural join events order by cast(ticket_price as float)')
+        result4=cursor.fetchall()
+        for row in result4:
+            print(row)
+    else:
+        print('Not a valid column choice')
+
+
 # function to display bar plot of the number of events in each month and pie chart of event type
 def generate_visualizations():
-    connection = sqlite3.connect('event_management.db')
-    cursor = connection.cursor()
-
     cursor.execute("SELECT event_date FROM events")
     rows = cursor.fetchall()
 
