@@ -243,6 +243,110 @@ def remove_record():
     else:
         print("Invalid table choice. Please try again.")
 
+
+# function to make basic statistical queries such as- mean, min,
+# max, median, standard deviation mean, on numerical columns
+def basic_statistical_query():
+    connection = sqlite3.connect('event_management.db')
+    cursor = connection.cursor()
+
+    print("Which table would you like to make a basic statistical query on?")
+    print("1. Attendees")
+    print("2. Events")
+    print("(Tickets does not have numerical columns for statistical queries.)")
+
+    table_choice = input("Enter the table number: ")
+
+    if table_choice == "1":
+        print("Which column would you like to make a basic statistical query on?")
+        print("1. Age")
+        column_choice = input("Enter the column number: ")
+
+        if column_choice == "1":
+            # select which query to do
+            print("Which query would you like to make?")
+            print("1. Mean")
+            print("2. Minimum")
+            print("3. Maximum")
+            print("4. Median")
+            print("5. Standard Deviation")
+            query_choice = input("Enter the query number: ")
+
+            if query_choice == "1":
+                cursor.execute("SELECT AVG(age) FROM attendees")
+                avg_age = cursor.fetchone()[0]
+                print("Average age of attendees:", avg_age)
+            elif query_choice == "2":
+                cursor.execute("SELECT MIN(age) FROM attendees")
+                min_age = cursor.fetchone()[0]
+                print("Minimum age of attendees:", min_age)
+            elif query_choice == "3":
+                cursor.execute("SELECT MAX(age) FROM attendees")
+                max_age = cursor.fetchone()[0]
+                print("Maximum age of attendees:", max_age)
+            elif query_choice == "4":
+                cursor.execute("SELECT AVG(age) FROM attendees")
+                avg_age = cursor.fetchone()[0]
+                print("Median age of attendees:", avg_age)
+            elif query_choice == "5":
+                cursor.execute("SELECT AVG(age) FROM attendees")
+                avg_age = cursor.fetchone()[0]
+                cursor.execute("SELECT age FROM attendees")
+                rows = cursor.fetchall()
+                ages = [int(row[0]) for row in rows]  # Convert ages to integers
+                sum_squared_diff = sum((age - avg_age) ** 2 for age in ages)
+                standard_deviation = (sum_squared_diff / len(ages)) ** 0.5
+                print("Standard deviation of ages of attendees:", standard_deviation)
+            else:
+                print("Invalid query choice. Please try again.")
+
+        else:
+            print("Invalid column choice. Please try again.")
+
+    elif table_choice == "2":
+        print("Which column would you like to make a basic statistical query on?")
+        print("1. Ticket Price")
+        column_choice = input("Enter the column number: ")
+
+        if column_choice == "1":
+            # select which query to do
+            print("Which query would you like to make?")
+            print("1. Mean")
+            print("2. Minimum")
+            print("3. Maximum")
+            print("4. Median")
+            print("5. Standard Deviation")
+            query_choice = input("Enter the query number: ")
+
+            if query_choice == "1":
+                cursor.execute("SELECT AVG(ticket_price) FROM events")
+                avg_ticket_price = cursor.fetchone()[0]
+                print("Average ticket price of events:", avg_ticket_price)
+            elif query_choice == "2":
+                cursor.execute("SELECT MIN(ticket_price) FROM events")
+                min_ticket_price = cursor.fetchone()[0]
+                print("Minimum ticket price of events:", min_ticket_price)
+            elif query_choice == "3":
+                cursor.execute("SELECT MAX(ticket_price) FROM events")
+                max_ticket_price = cursor.fetchone()[0]
+                print("Maximum ticket price of events:", max_ticket_price)
+            elif query_choice == "4":
+                cursor.execute("SELECT AVG(ticket_price) FROM events")
+                avg_ticket_price = cursor.fetchone()[0]
+                print("Median ticket price of events:", avg_ticket_price)
+            elif query_choice == "5":
+                cursor.execute("SELECT AVG(ticket_price) FROM events")
+                avg_ticket_price = cursor.fetchone()[0]
+                cursor.execute("SELECT ticket_price FROM events")
+                rows = cursor.fetchall()
+                ticket_prices = [float(row[0]) for row in rows]  # Convert ticket prices to floats
+                sum_squared_diff = sum((price - avg_ticket_price) ** 2 for price in ticket_prices)
+                standard_deviation = (sum_squared_diff / len(ticket_prices)) ** 0.5
+                print("Standard deviation of ticket prices of events:", standard_deviation)
+            else:
+                print("Invalid query choice. Please try again.")
+
+
 # function to display bar plot of the number of events in each month and pie chart of event type
 def generate_visualizations():
     connection = sqlite3.connect('event_management.db')
