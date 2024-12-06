@@ -1,5 +1,3 @@
-import sqlite3
-import matplotlib.pyplot as plt
 from event_management_functions import (display_table, add_record, modify_record, remove_record,
                                         generate_visualizations, basic_statistical_query , where_query, join_query)
 

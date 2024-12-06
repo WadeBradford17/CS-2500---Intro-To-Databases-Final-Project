@@ -49,25 +49,26 @@ def add_record():
     table_choice = input("Enter the table number: ")
 
     if table_choice == "1":
-        cursor.execute("SELECT MAX(attendee_id) FROM attendees")
+        cursor.execute("SELECT attendee_id FROM attendees ORDER BY cast(attendee_id as int) DESC LIMIT 1")
         last_attendee_id = cursor.fetchone()[0]
-        # turn last_attendee_id into an integer
         last_attendee_id = int(last_attendee_id)
         if last_attendee_id is None:
             last_attendee_id = 0
         attendee_id = last_attendee_id + 1
+        # turn it back into a string in this format 'id'
+        attendee_id = str(attendee_id)
         name = input("Enter the full name of the attendee: ")
         email = input("Enter the email of the attendee: ")
         age = input("Enter the age of the attendee: ")
-        registration_date = input("Enter the registration date of the attendee (YYYY-MM-DD): ")
+        registration_date = input("Enter the registration date of the attendee (MM/DD/YYYY): ")
 
-        cursor.execute("INSERT INTO attendees (attendee_id, name, email, age, registration_date) VALUES (?, ?, ?, ?)",
+        cursor.execute("INSERT INTO attendees (attendee_id, name, email, age, registration_date) VALUES (?, ?, ?, ?, ?)",
                        (attendee_id, name, email, age, registration_date))
         connection.commit()
         print("Record added to attendees table successfully.")
 
     elif table_choice == "2":
-        cursor.execute("SELECT MAX(event_id) FROM events")
+        cursor.execute("SELECT event_id FROM events ORDER by cast(event_id as int) DESC LIMIT 1")
         last_event_id = cursor.fetchone()[0]
         last_event_id = int(last_event_id)
         if last_event_id is None:
@@ -75,18 +76,18 @@ def add_record():
         event_id = last_event_id + 1
         event_name = input("Enter the name of the event: ")
         location = input("Enter the location of the event: ")
-        event_date = input("Enter the date of the event (YYYY-MM-DD): ")
+        event_date = input("Enter the date of the event (MM/DD/YYYY): ")
         event_type = input("Enter the type of the event: ")
         ticket_price = input("Enter the ticket price of the event: ")
 
         cursor.execute("INSERT INTO events (event_id, event_name, location, event_date, event_type, ticket_price) "
-                       "VALUES (?, ?, ?, ?, ?)",
+                       "VALUES (?, ?, ?, ?, ?, ?)",
                        (event_id, event_name, location, event_date, event_type, ticket_price))
         connection.commit()
         print("Record added to events table successfully.")
 
     elif table_choice == "3":
-        cursor.execute("SELECT MAX(ticket_id) FROM tickets")
+        cursor.execute("SELECT ticket_id FROM tickets ORDER BY cast(ticket_id as int) DESC LIMIT 1")
         last_ticket_id = cursor.fetchone()[0]
         last_ticket_id = int(last_ticket_id)
         if last_ticket_id is None:
@@ -94,11 +95,11 @@ def add_record():
         ticket_id = last_ticket_id + 1
         event_id = input("Enter the event ID: ")
         attendee_id = input("Enter the attendee ID: ")
-        purchase_date = input("Enter the purchase date (YYYY-MM-DD): ")
+        purchase_date = input("Enter the purchase date (MM/DD/YYYY): ")
         seat_number = input("Enter the seat number: ")
 
         cursor.execute("INSERT INTO tickets (ticket_id, event_id, attendee_id, purchase_date, seat_number) "
-                       "VALUES (?, ?, ?, ?)",
+                       "VALUES (?, ?, ?, ?, ?)",
                        (ticket_id, event_id, attendee_id, purchase_date, seat_number))
         connection.commit()
         print("Record added to tickets table successfully.")
